@@ -1,20 +1,19 @@
 import mysql from 'mysql2';
-import { DBConfig } from './dbconfig';
+import { DBConfig, DBConfigLocal } from './dbconfig';
+import 'dotenv/config';
 
-const con = mysql.createConnection({
-    host: process.env.SQL_HOST,
-    user: process.env.SQL_USERNAME,
-    password: process.env.SQL_PASSWORD,
-    database: process.env.SQL_DATABASE,
+export const DB = mysql.createConnection({
+    host: DBConfig.HOST,
+    user: DBConfig.USER,
+    password: DBConfig.PASSWORD,
+    database: DBConfig.DATABASE,
 })
 
-con.connect(function (err) {
-    if (err) throw err;
-    console.log("Connected!");
 
-    con.query("CREATE DATABASE railway",
-        function (err, result) {
-            if (err) throw err;
-            console.log("Database railway created");
-        });
-});
+// local
+export const DBLocal = mysql.createConnection({
+    host: DBConfigLocal.HOST,
+    user: DBConfigLocal.USER,
+    password: DBConfigLocal.PASSWORD,
+    database: DBConfigLocal.DATABASE,
+})

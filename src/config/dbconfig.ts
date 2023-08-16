@@ -1,6 +1,15 @@
 export const DBConfig = {
-    HOST: process.env.DB_HOST,
-    USER: process.env.DB_USERNAME,
-    PASSWORD: process.env.DB_PASSWORD,
-    DB: process.env.DB_NAME,
+    HOST: process.env.SQL_HOST,
+    USER: process.env.SQL_USERNAME,
+    PASSWORD: process.env.SQL_PASSWORD,
+    DATABASE: process.env.SQL_DATABASE,
+}
+
+
+// local
+export const DBConfigLocal = {
+    HOST: process.env.SQL_HOSTLOCAL,
+    USER: process.env.SQL_USERNAMELOCAL,
+    PASSWORD: process.env.SQL_PASSWORDLOCAL,
+    DATABASE: process.env.SQL_DATABASELOCAL,
 }

@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const TransactionDataRoute_1 = __importDefault(require("./TransactionDataRoute"));
 const router = express_1.default.Router();
 // main app/page route
 router.get("/", function (req, res) {
@@ -12,4 +13,5 @@ router.get("/", function (req, res) {
         message: "Hello, this is Sherin Olivia's Assignment for Week 9"
     });
 });
+router.use('/transaction', TransactionDataRoute_1.default);
 exports.default = router;
