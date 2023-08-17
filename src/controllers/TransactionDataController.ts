@@ -1,7 +1,11 @@
 import express, { Request, Response } from 'express';
 import { DB, DBLocal } from '../config/dbconnection';
 const router = express.Router();
-
+// import redis from 'ioredis';
+// const redisCon = new redis(
+// host: 'localhost'
+// port: 6379
+// )
 // ALL TRANSACTION DATA
 const getAllTransactionData = (req: Request, res: Response) => {
     DB.connect(function(err){
@@ -106,6 +110,28 @@ const getTransactionDataLocal = (req: Request, res: Response) => {
 //         // }
     
 // }
+
+
+// CREATE NEW ROW/ DATA ENTRY (LOCAL)
+
+const deleteTransactionDataLocal = (req: Request, res: Response) => {
+    DBLocal.connect(function(err){
+        if(err){
+            res.status(400).send(err)
+        }else {
+            const {type, amount, user_id} = req.body;
+            DBLocal.query(``, function(err, result, fields){
+                if(err){           
+                    res.status(400).send(err)
+                }else {
+                    return res.status(200).send(result);
+                }
+            })
+        }
+    })
+
+}
+
 
 const TransactionDataController = { getAllTransactionData, getAllTransactionDataLocal, getTransactionData, getTransactionDataLocal, insertTransactionDataLocal }
 export default TransactionDataController

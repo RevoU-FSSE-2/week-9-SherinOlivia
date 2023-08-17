@@ -6,6 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dbconnection_1 = require("../config/dbconnection");
 const router = express_1.default.Router();
+// import redis from 'ioredis';
+// const redisCon = new redis(
+// host: 'localhost'
+// port: 6379
+// )
 // ALL TRANSACTION DATA
 const getAllTransactionData = (req, res) => {
     dbconnection_1.DB.connect(function (err) {
@@ -109,5 +114,24 @@ const insertTransactionDataLocal = (req, res) => {
 //         //     res.status(400).send(err)
 //         // }
 // }
+// CREATE NEW ROW/ DATA ENTRY (LOCAL)
+const deleteTransactionDataLocal = (req, res) => {
+    dbconnection_1.DBLocal.connect(function (err) {
+        if (err) {
+            res.status(400).send(err);
+        }
+        else {
+            const { type, amount, user_id } = req.body;
+            dbconnection_1.DBLocal.query(``, function (err, result, fields) {
+                if (err) {
+                    res.status(400).send(err);
+                }
+                else {
+                    return res.status(200).send(result);
+                }
+            });
+        }
+    });
+};
 const TransactionDataController = { getAllTransactionData, getAllTransactionDataLocal, getTransactionData, getTransactionDataLocal, insertTransactionDataLocal };
 exports.default = TransactionDataController;
