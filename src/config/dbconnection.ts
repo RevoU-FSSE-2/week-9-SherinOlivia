@@ -2,6 +2,7 @@ import mysql from 'mysql2';
 import { DBConfig, DBConfigLocal } from './dbconfig';
 import 'dotenv/config';
 
+
 export const DB = mysql.createConnection({
     host: DBConfig.HOST,
     user: DBConfig.USER,
