@@ -42,6 +42,7 @@ const getTransactionData = (req, res) => {
         }
     });
 };
+// ================================LOCAL======================================
 // ALL TRANSACTION DATA (LOCAL)
 const getAllTransactionDataLocal = (req, res) => {
     dbconnection_1.DBLocal.connect(function (err) {
@@ -49,7 +50,7 @@ const getAllTransactionDataLocal = (req, res) => {
             res.status(400).send(err);
         }
         else {
-            dbconnection_1.DB.query("SELECT * FROM transaction", function (err, result, fields) {
+            dbconnection_1.DBLocal.query("SELECT * FROM transaction", function (err, result, fields) {
                 if (err) {
                     res.status(400).send(err);
                 }
@@ -60,14 +61,14 @@ const getAllTransactionDataLocal = (req, res) => {
         }
     });
 };
-// TRANSACTION DATA BY ID (LOCAL)
+// TRANSACTION DATA BY USER_ID (LOCAL)
 const getTransactionDataLocal = (req, res) => {
     dbconnection_1.DBLocal.connect(function (err) {
         if (err) {
             res.status(400).send(err);
         }
         else {
-            dbconnection_1.DBLocal.query(`SELECT * FROM transaction WHERE id= ${req.params.id}`, function (err, result, fields) {
+            dbconnection_1.DBLocal.query(`SELECT * FROM transaction WHERE user_id= ${req.params.id}`, function (err, result, fields) {
                 if (err) {
                     res.status(400).send(err);
                 }
@@ -78,5 +79,35 @@ const getTransactionDataLocal = (req, res) => {
         }
     });
 };
-const TransactionDataController = { getAllTransactionData, getAllTransactionDataLocal, getTransactionData, getTransactionDataLocal };
+// CREATE NEW ROW/ DATA ENTRY (LOCAL)
+const insertTransactionDataLocal = (req, res) => {
+    dbconnection_1.DBLocal.connect(function (err) {
+        if (err) {
+            res.status(400).send(err);
+        }
+        else {
+            const { type, amount, user_id } = req.body;
+            dbconnection_1.DBLocal.query(`INSERT INTO transaction SET user_id=${user_id}, \`type\`='${type}', amount=${amount}`, function (err, result, fields) {
+                if (err) {
+                    res.status(400).send(err);
+                }
+                else {
+                    return res.status(200).send(result);
+                }
+            });
+        }
+    });
+};
+//     const insertTransactionDataLocal = async (req: Request, res: Response) => {
+//         // try {
+//         //     DBLocal.connect(function(err){
+//         //     const { type, amount, user_id } =  req.body;
+//         //     const result: any = await DBLocal.query(`INSERT INTO transaction SET user_id=${user_id}, \`type\`='${type}', amount=${amount}`)
+//         //      res.status(200).send(result.insertId);  
+//         //     }        
+//         //  } catch (error) {
+//         //     res.status(400).send(err)
+//         // }
+// }
+const TransactionDataController = { getAllTransactionData, getAllTransactionDataLocal, getTransactionData, getTransactionDataLocal, insertTransactionDataLocal };
 exports.default = TransactionDataController;

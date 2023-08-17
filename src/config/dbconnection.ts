@@ -17,3 +17,4 @@ export const DBLocal = mysql.createConnection({
     password: DBConfigLocal.PASSWORD,
     database: DBConfigLocal.DATABASE,
 })
+

@@ -7,7 +7,7 @@ import bodyParser from "body-parser";
 const app: Express = express();
 const port = process.env.PORT
 
-DB.connect(function () {
+DB.connect( function () {
     if (DB) {
         console.log("Railway Connection Connected");
     } else {
@@ -15,7 +15,7 @@ DB.connect(function () {
     }
 }),
 
-DBLocal.connect(function () {
+DBLocal.connect( function () {
     if (DBLocal) {
         console.log("Localhost Connection Connected");
     } else {

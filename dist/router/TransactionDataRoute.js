@@ -12,4 +12,6 @@ transactionrouter.get('/', TransactionDataController_1.default.getAllTransaction
 // get transaction data per id
 // transactionrouter.get('/:id', TransactionDataController.getTransactionData);
 transactionrouter.get('/:id', TransactionDataController_1.default.getTransactionDataLocal);
+// post transaction data
+transactionrouter.post('/', TransactionDataController_1.default.insertTransactionDataLocal);
 exports.default = transactionrouter;
