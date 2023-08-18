@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 
 const app: Express = express();
 const port = process.env.PORT
+console.log(port)
 
 DB.connect(function () {
     if (DB) {

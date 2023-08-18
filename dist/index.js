@@ -10,6 +10,7 @@ const mainrouter_1 = __importDefault(require("./router/mainrouter"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const app = (0, express_1.default)();
 const port = process.env.PORT;
+console.log(port);
 dbconnection_1.DB.connect(function () {
     if (dbconnection_1.DB) {
         console.log("Railway Connection Connected");

@@ -49,7 +49,7 @@ const getAllTransactionDataLocal = (req, res) => {
             res.status(400).send(err);
         }
         else {
-            dbconnection_1.DB.query("SELECT * FROM transaction", function (err, result, fields) {
+            dbconnection_1.DBLocal.query("SELECT * FROM transaction", function (err, result, fields) {
                 if (err) {
                     res.status(400).send(err);
                 }
