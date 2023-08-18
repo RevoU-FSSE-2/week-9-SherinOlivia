@@ -91,35 +91,41 @@ const insertTransactionDataLocal = (req, res) => __awaiter(void 0, void 0, void 
         res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
     }
 });
-//     const insertTransactionDataLocal = async (req: Request, res: Response) => {
-//         // try {
-//         //     DBLocal.connect(function(err){
-//         //     const { type, amount, user_id } =  req.body;
-//         //     const result: any = await DBLocal.query(`INSERT INTO transaction SET user_id=${user_id}, \`type\`='${type}', amount=${amount}`)
-//         //      res.status(200).send(result.insertId);  
-//         //     }        
-//         //  } catch (error) {
-//         //     res.status(400).send(err)
-//         // }
-// }
-// CREATE NEW ROW/ DATA ENTRY (LOCAL)
-const deleteTransactionDataLocal = (req, res) => {
-    dbconnection_1.DBLocal.connect(function (err) {
-        if (err) {
-            res.status(400).send(err);
-        }
-        else {
-            const { type, amount, user_id } = req.body;
-            dbconnection_1.DBLocal.query(``, function (err, result, fields) {
-                if (err) {
-                    res.status(400).send(err);
-                }
-                else {
-                    return res.status(200).send(result);
-                }
-            });
-        }
-    });
+// UPDATE WHOLE TRANSACTION DATA BY ID (LOCAL)
+const updateTransactionDataLocal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = parseInt(req.params.id);
+        const { type, amount, user_id } = req.body;
+        const dbLocalTrans = yield dbconnection_1.DBLocal.promise().query(`
+        UPDATE transaction SET \`type\`='${type}', amount=${amount}, user_id=${user_id}
+        `, id);
+        res.status(200).json((0, errorHandling_1.errorHandling)({ id: id }, null));
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
+    }
+});
+// DELETE TRANSACTION DATA (LOCAL)
+const deleteTransactionDataLocal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = parseInt(req.params.id);
+        const dbLocalTrans = yield dbconnection_1.DBLocal.promise().query(`
+        DELETE FROM transaction WHERE id = ?`, id);
+        res.status(200).json((0, errorHandling_1.errorHandling)({ id: id }, null));
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
+    }
+});
+const TransactionDataController = {
+    getAllTransactionData,
+    getAllTransactionDataLocal,
+    getTransactionData,
+    getTransactionDataLocal,
+    insertTransactionDataLocal,
+    updateTransactionDataLocal,
+    deleteTransactionDataLocal
 };
-const TransactionDataController = { getAllTransactionData, getAllTransactionDataLocal, getTransactionData, getTransactionDataLocal, insertTransactionDataLocal };
 exports.default = TransactionDataController;

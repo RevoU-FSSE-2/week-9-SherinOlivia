@@ -14,6 +14,6 @@ router.get("/", function (req, res) {
         message: "Hello, this is Sherin Olivia's Assignment for Week 9"
     });
 });
-router.use('/transactions', TransactionDataRoute_1.default);
-router.use('/users', UserDataRoute_1.default);
+router.use('/transaction', TransactionDataRoute_1.default);
+router.use('/user', UserDataRoute_1.default);
 exports.default = router;

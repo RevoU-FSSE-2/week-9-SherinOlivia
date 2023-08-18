@@ -89,44 +89,46 @@ const insertTransactionDataLocal = async (req: Request, res: Response) => {
 };
 
 
+// UPDATE WHOLE TRANSACTION DATA BY ID (LOCAL)
+
+const updateTransactionDataLocal = async (req: Request, res: Response) => {
+    try {
+        const id = parseInt(req.params.id)
+        const { type, amount, user_id } =  req.body;
+        const dbLocalTrans: any[] = await DBLocal.promise().query(`
+        UPDATE transaction SET \`type\`='${type}', amount=${amount}, user_id=${user_id}
+        `, id);
+
+        res.status(200).json(errorHandling({ id: id}, null));
+    } catch (error) {
+        console.error(error);
+        res.status(500).json(errorHandling(null, "Connection error!! Can't retrieve Data"));
+    }
+};
 
 
+// DELETE TRANSACTION DATA (LOCAL)
 
-//     const insertTransactionDataLocal = async (req: Request, res: Response) => {
+const deleteTransactionDataLocal = async (req: Request, res: Response) => {
+    try {
+        const id = parseInt(req.params.id)
+        const dbLocalTrans: any[] = await DBLocal.promise().query(`
+        DELETE FROM transaction WHERE id = ?`, id);
 
-//         // try {
-//         //     DBLocal.connect(function(err){
-//         //     const { type, amount, user_id } =  req.body;
-//         //     const result: any = await DBLocal.query(`INSERT INTO transaction SET user_id=${user_id}, \`type\`='${type}', amount=${amount}`)
-//         //      res.status(200).send(result.insertId);  
-//         //     }        
-//         //  } catch (error) {
-//         //     res.status(400).send(err)
-//         // }
-    
-// }
-
-
-// CREATE NEW ROW/ DATA ENTRY (LOCAL)
-
-const deleteTransactionDataLocal = (req: Request, res: Response) => {
-    DBLocal.connect(function(err){
-        if(err){
-            res.status(400).send(err)
-        }else {
-            const {type, amount, user_id} = req.body;
-            DBLocal.query(``, function(err, result, fields){
-                if(err){           
-                    res.status(400).send(err)
-                }else {
-                    return res.status(200).send(result);
-                }
-            })
-        }
-    })
-
-}
+        res.status(200).json(errorHandling({ id: id}, null));
+    } catch (error) {
+        console.error(error);
+        res.status(500).json(errorHandling(null, "Connection error!! Can't retrieve Data"));
+    }
+};
 
 
-const TransactionDataController = { getAllTransactionData, getAllTransactionDataLocal, getTransactionData, getTransactionDataLocal, insertTransactionDataLocal }
+const TransactionDataController = { 
+    getAllTransactionData, 
+    getAllTransactionDataLocal, 
+    getTransactionData, 
+    getTransactionDataLocal, 
+    insertTransactionDataLocal, 
+    updateTransactionDataLocal, 
+    deleteTransactionDataLocal }
 export default TransactionDataController

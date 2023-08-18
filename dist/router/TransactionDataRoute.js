@@ -14,4 +14,8 @@ transactionrouter.get('/r/:id', TransactionDataController_1.default.getTransacti
 transactionrouter.get('/:id', TransactionDataController_1.default.getTransactionDataLocal);
 // post transaction data
 transactionrouter.post('/', TransactionDataController_1.default.insertTransactionDataLocal);
+// update (put) transaction data by id
+transactionrouter.put('/:id', TransactionDataController_1.default.updateTransactionDataLocal);
+//delete transaction data by id
+transactionrouter.delete('/:id', TransactionDataController_1.default.deleteTransactionDataLocal);
 exports.default = transactionrouter;

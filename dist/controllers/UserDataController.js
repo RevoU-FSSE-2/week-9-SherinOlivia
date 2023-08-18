@@ -14,7 +14,7 @@ const dbconnection_1 = require("../config/dbconnection");
 const errorHandling_1 = require("./errorHandling");
 const getUserDataLocal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const id = req.params.id;
+        const id = parseInt(req.params.id);
         // const userKey = "user:" + id
         // const redisCacheData = await redisCon.hgetall(userKey)
         // if (Object.keys(redisCacheData).length !== 0) {

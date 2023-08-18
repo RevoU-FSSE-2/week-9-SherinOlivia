@@ -6,7 +6,7 @@ import { RowDataPacket } from 'mysql2';
 
 const getUserDataLocal = async (req: Request, res: Response) => {
     try {
-        const id = req.params.id
+        const id = parseInt(req.params.id)
         // const userKey = "user:" + id
         // const redisCacheData = await redisCon.hgetall(userKey)
 
