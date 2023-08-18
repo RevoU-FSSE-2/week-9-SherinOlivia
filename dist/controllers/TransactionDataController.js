@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dbconnection_1 = require("../config/dbconnection");
+// import { RowDataPacket } from 'mysql2';
 // import { redisCon } from '../config/redisconnection';
 const errorHandling_1 = require("./errorHandling");
 // ALL TRANSACTION DATA
