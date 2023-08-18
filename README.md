@@ -31,7 +31,14 @@ As part of the assignment, we will create a simple REST API Server using Express
 </div>
 
 ## API Contract
-
+- **GET** /user/:id
+![get-method]()
+- **POST** /transaction
+![post-method]()
+- **PUT** /transaction/:id
+![put-method]()
+- **DELETE** /transaction/:id
+![delete-method]()
 
 ### Contact Me:
 
