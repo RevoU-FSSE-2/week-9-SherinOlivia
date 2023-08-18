@@ -3,13 +3,15 @@ const transactionrouter = express.Router()
 import TransactionDataController  from '../controllers/TransactionDataController';
 
 // get all transaction data
-transactionrouter.get('/', TransactionDataController.getAllTransactionData);
+transactionrouter.get('/r', TransactionDataController.getAllTransactionData);
+transactionrouter.get('/', TransactionDataController.getAllTransactionDataLocal);
 // get transaction data per id
-transactionrouter.get('/:id', TransactionDataController.getTransactionData);
+transactionrouter.get('/r/:id', TransactionDataController.getTransactionData);
+transactionrouter.get('/:id', TransactionDataController.getTransactionDataLocal);
 // post transaction data
-transactionrouter.post('/', TransactionDataController.insertTransactionData);
+transactionrouter.post('/', TransactionDataController.insertTransactionDataLocal);
 // update (put) transaction data by id
-transactionrouter.put('/:id', TransactionDataController.updateTransactionData);
+transactionrouter.put('/:id', TransactionDataController.updateTransactionDataLocal);
 //delete transaction data by id
-transactionrouter.delete('/:id', TransactionDataController.deleteTransactionData);
+transactionrouter.delete('/:id', TransactionDataController.deleteTransactionDataLocal);
 export default transactionrouter

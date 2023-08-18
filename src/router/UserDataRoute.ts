@@ -3,9 +3,9 @@ const userrouter = express.Router()
 import UserDataController from '../controllers/UserDataController';
 
 // get all user data
-userrouter.get('/', UserDataController.getAllUserData);
+userrouter.get('/', UserDataController.getAllUserDataLocal);
 
 // get user data per id
-userrouter.get('/:id', UserDataController.getUserData);
+userrouter.get('/:id', UserDataController.getUserDataLocal);
 
 export default userrouter
