@@ -5,12 +5,12 @@ import { DB, DBLocal } from '../config/dbconnection';
 import { errorHandling, query } from './errorHandling';
 
 
-
+// railway
 // ALL TRANSACTION DATA
 const getAllTransactionData = async (req: Request, res: Response) => {
     try {
-        const dbTrans = await DB.promise().query("select * from railway.transaction");
-
+        const [dbTrans] = await DB.promise().query("select * from railway.transaction");
+        console.log(dbTrans)
         if (Object.keys(dbTrans).length !== 0) {
             res.status(200).json(errorHandling(dbTrans, null));
         } else {

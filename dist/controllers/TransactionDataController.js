@@ -13,10 +13,12 @@ const dbconnection_1 = require("../config/dbconnection");
 // import { RowDataPacket } from 'mysql2';
 // import { redisCon } from '../config/redisconnection';
 const errorHandling_1 = require("./errorHandling");
+// railway
 // ALL TRANSACTION DATA
 const getAllTransactionData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const dbTrans = yield dbconnection_1.DB.promise().query("select * from railway.transaction");
+        const [dbTrans] = yield dbconnection_1.DB.promise().query("select * from railway.transaction");
+        console.log(dbTrans);
         if (Object.keys(dbTrans).length !== 0) {
             res.status(200).json((0, errorHandling_1.errorHandling)(dbTrans, null));
         }
