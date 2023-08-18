@@ -7,34 +7,34 @@ import { error } from 'console';
 
 
 // ALL TRANSACTION DATA
-const getAllTransactionData = (req: Request, res: Response) => {
-    DB.query("SELECT * FROM week9.transaction", function(err, result, fields) {
-        if(err){           
-            console.error(err)
-            res.status(500).json(errorHandling(null, "Connection error!! Can't retrieve Data"))
-            res.end()
-            return
-        } else {
-            res.status(200).json(errorHandling(result, null))
-            res.end()
-        }
-    })
-}
+// const getAllTransactionData = (req: Request, res: Response) => {
+//     DB.query("SELECT * FROM week9.transaction", function(err, result, fields) {
+//         if(err){           
+//             console.error(err)
+//             res.status(500).json(errorHandling(null, "Connection error!! Can't retrieve Data"))
+//             res.end()
+//             return
+//         } else {
+//             res.status(200).json(errorHandling(result, null))
+//             res.end()
+//         }
+//     })
+// }
 
-// TRANSACTION DATA BY ID
-const getTransactionData = (req: Request, res: Response) => {
-    DB.query(`SELECT * FROM week9.transaction WHERE user_id= ${req.params.id}`, function(err, result, fields){
-        if(err){           
-            console.error(err)
-            res.status(500).json(errorHandling(null, "Connection error!! Can't retrieve Data"))
-            res.end()
-            return
-        } else {
-            res.status(200).json(errorHandling(result, null))
-            res.end()
-        }
-    })
-}
+// // TRANSACTION DATA BY ID
+// const getTransactionData = (req: Request, res: Response) => {
+//     DB.query(`SELECT * FROM week9.transaction WHERE user_id= ${req.params.id}`, function(err, result, fields){
+//         if(err){           
+//             console.error(err)
+//             res.status(500).json(errorHandling(null, "Connection error!! Can't retrieve Data"))
+//             res.end()
+//             return
+//         } else {
+//             res.status(200).json(errorHandling(result, null))
+//             res.end()
+//         }
+//     })
+// }
 
 // ================================LOCAL======================================
 
@@ -135,5 +135,5 @@ const deleteTransactionDataLocal = (req: Request, res: Response) => {
 }
 
 
-const TransactionDataController = { getAllTransactionData, getAllTransactionDataLocal, getTransactionData, getTransactionDataLocal, insertTransactionDataLocal }
+const TransactionDataController = { getAllTransactionDataLocal, getTransactionDataLocal, insertTransactionDataLocal }
 export default TransactionDataController
