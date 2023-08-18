@@ -13,7 +13,7 @@ const errorHandling = function (data, error) {
     }
     return {
         success: true,
-        data: data[0]
+        data: data
     };
 };
 exports.errorHandling = errorHandling;

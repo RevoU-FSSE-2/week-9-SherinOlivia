@@ -15,7 +15,7 @@ const getUserDataLocal = async (req: Request, res: Response) => {
         //     res.status(200).json(errorHandling(redisCacheData, null))
         //     res.end()
         // } else {
-            const dbLocalUser = await DBLocal.promise().query(`
+            const dbLocalUser: any[] = await DBLocal.promise().query(`
             SELECT 
                 u.id,
                 u.name,
@@ -35,7 +35,7 @@ const getUserDataLocal = async (req: Request, res: Response) => {
             // await redisCon.hset(userKey, dbLocalUser)
             // await redisCon.expire(userKey, 50);
             if (Object.keys(dbLocalUser).length !== 0)  {
-                res.status(200).json(errorHandling(dbLocalUser[0], null));
+                res.status(200).json(errorHandling(dbLocalUser[0][0], null));
             } else {
                 res.status(404).json(errorHandling(null, "User not found"));
             }
@@ -64,7 +64,7 @@ const getAllUserDataLocal = async (req: Request, res: Response) => {
                 u.id`)
 
             if (Object.keys(dbLocalUser).length !== 0)  {
-                res.status(200).json(errorHandling(dbLocalUser, null));
+                res.status(200).json(errorHandling(dbLocalUser[0], null));
             } else {
                 res.status(404).json(errorHandling(null, "User not found"));
             }

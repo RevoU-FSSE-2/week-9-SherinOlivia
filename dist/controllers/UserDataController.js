@@ -41,7 +41,7 @@ const getUserDataLocal = (req, res) => __awaiter(void 0, void 0, void 0, functio
         // await redisCon.hset(userKey, dbLocalUser)
         // await redisCon.expire(userKey, 50);
         if (Object.keys(dbLocalUser).length !== 0) {
-            res.status(200).json((0, errorHandling_1.errorHandling)(dbLocalUser[0], null));
+            res.status(200).json((0, errorHandling_1.errorHandling)(dbLocalUser[0][0], null));
         }
         else {
             res.status(404).json((0, errorHandling_1.errorHandling)(null, "User not found"));
@@ -69,7 +69,7 @@ const getAllUserDataLocal = (req, res) => __awaiter(void 0, void 0, void 0, func
             GROUP BY
                 u.id`);
         if (Object.keys(dbLocalUser).length !== 0) {
-            res.status(200).json((0, errorHandling_1.errorHandling)(dbLocalUser, null));
+            res.status(200).json((0, errorHandling_1.errorHandling)(dbLocalUser[0], null));
         }
         else {
             res.status(404).json((0, errorHandling_1.errorHandling)(null, "User not found"));

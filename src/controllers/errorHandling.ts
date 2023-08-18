@@ -14,7 +14,7 @@ export const errorHandling = function (data: any, error: any) {
 
     return {
         success: true,
-        data: data[0]
+        data: data
     }
 }
 

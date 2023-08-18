@@ -13,23 +13,25 @@ const dbconnection_1 = require("../config/dbconnection");
 // import { redisCon } from '../config/redisconnection';
 const errorHandling_1 = require("./errorHandling");
 // ALL TRANSACTION DATA
-const getAllTransactionData = (req, res) => {
-    dbconnection_1.DB.query("SELECT * FROM week9.transaction", function (err, result, fields) {
-        if (err) {
-            console.error(err);
-            res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
-            res.end();
-            return;
+const getAllTransactionData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const dbTrans = yield dbconnection_1.DB.promise().query(`
+        select * from week9.transaction`);
+        if (Object.keys(dbTrans).length !== 0) {
+            res.status(200).json((0, errorHandling_1.errorHandling)(dbTrans[0], null));
         }
         else {
-            res.status(200).json((0, errorHandling_1.errorHandling)(result, null));
-            res.end();
+            res.status(404).json((0, errorHandling_1.errorHandling)(null, "Data not found"));
         }
-    });
-};
-// TRANSACTION DATA BY ID
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't Retrieve Data"));
+    }
+});
+// // TRANSACTION DATA BY ID
 const getTransactionData = (req, res) => {
-    dbconnection_1.DB.query(`SELECT * FROM week9.transaction WHERE user_id= ${req.params.id}`, function (err, result, fields) {
+    dbconnection_1.DB.query(`select * from railway.transaction where user_id= ${req.params.id}`, function (err, result, fields) {
         if (err) {
             console.error(err);
             res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
@@ -44,20 +46,22 @@ const getTransactionData = (req, res) => {
 };
 // ================================LOCAL======================================
 // ALL TRANSACTION DATA (LOCAL)
-const getAllTransactionDataLocal = (req, res) => {
-    dbconnection_1.DBLocal.query("SELECT * FROM week9.transaction", function (err, result, fields) {
-        if (err) {
-            console.error(err);
-            res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
-            res.end();
-            return;
+const getAllTransactionDataLocal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const dbLocalTrans = yield dbconnection_1.DBLocal.promise().query(`
+        SELECT * FROM week9.transaction`);
+        if (Object.keys(dbLocalTrans).length !== 0) {
+            res.status(200).json((0, errorHandling_1.errorHandling)(dbLocalTrans[0], null));
         }
         else {
-            res.status(200).json((0, errorHandling_1.errorHandling)(result, null));
-            res.end();
+            res.status(404).json((0, errorHandling_1.errorHandling)(null, "Data not found"));
         }
-    });
-};
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
+    }
+});
 // TRANSACTION DATA BY USER_ID (LOCAL)
 const getTransactionDataLocal = (req, res) => {
     dbconnection_1.DBLocal.query(`SELECT * FROM week9.transaction WHERE user_id= ${req.params.id}`, function (err, result, fields) {
@@ -76,26 +80,11 @@ const getTransactionDataLocal = (req, res) => {
 // CREATE NEW ROW/ DATA ENTRY (LOCAL)
 const insertTransactionDataLocal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const body = req.body;
-        const dbLocalUser = yield dbconnection_1.DBLocal.promise().query(`
-            SELECT 
-                u.id,
-                u.name,
-                u.address,
-                SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE -t.amount END) as balance
-            FROM 
-                week9.user as u
-            LEFT JOIN
-                week9.transaction as t
-                ON u.id = t.user_id
-            GROUP BY
-                u.id`);
-        if (Object.keys(dbLocalUser).length !== 0) {
-            res.status(200).json((0, errorHandling_1.errorHandling)(dbLocalUser, null));
-        }
-        else {
-            res.status(404).json((0, errorHandling_1.errorHandling)(null, "User not found"));
-        }
+        const { type, amount, user_id } = req.body;
+        const dbLocalTrans = yield dbconnection_1.DBLocal.promise().query(`
+        INSERT INTO transaction SET \`type\`='${type}', amount=${amount}, user_id=${user_id}
+        `);
+        res.status(200).json((0, errorHandling_1.errorHandling)({ id: dbLocalTrans[0].insertId }, null));
     }
     catch (error) {
         console.error(error);
