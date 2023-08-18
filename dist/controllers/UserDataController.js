@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dbconnection_1 = require("../config/dbconnection");
 // import redisCon from "../config/redisconnection";
 const errorHandling_1 = require("./errorHandling");
-const getUserDataLocal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getUserData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = parseInt(req.params.id);
         // const userKey = "user:" + id
@@ -22,7 +22,7 @@ const getUserDataLocal = (req, res) => __awaiter(void 0, void 0, void 0, functio
         //     res.status(200).json(errorHandling(redisCacheData, null))
         //     res.end()
         // } else {
-        const dbLocalUser = yield dbconnection_1.DBLocal.promise().query(`
+        const dbUser = yield dbconnection_1.DB.promise().query(`
             SELECT 
                 u.id,
                 u.name,
@@ -30,18 +30,18 @@ const getUserDataLocal = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE -t.amount END) as balance,
                 SUM(CASE WHEN t.type = 'expense' THEN t.amount ELSE 0 END) as expense
             FROM 
-                week9.user as u
+                railway.user as u
             LEFT JOIN
-                week9.transaction as t
+                railway.transaction as t
                 ON u.id = t.user_id
             WHERE
                 u.id = ?
             GROUP BY
                 u.id`, id);
-        // await redisCon.hset(userKey, dbLocalUser)
+        // await redisCon.hset(userKey, dbUser)
         // await redisCon.expire(userKey, 50);
-        if (Object.keys(dbLocalUser).length !== 0) {
-            res.status(200).json((0, errorHandling_1.errorHandling)(dbLocalUser[0][0], null));
+        if (Object.keys(dbUser).length !== 0) {
+            res.status(200).json((0, errorHandling_1.errorHandling)(dbUser[0][0], null));
         }
         else {
             res.status(404).json((0, errorHandling_1.errorHandling)(null, "User not found"));
@@ -53,23 +53,23 @@ const getUserDataLocal = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 // Get All User Data
-const getAllUserDataLocal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllUserData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const dbLocalUser = yield dbconnection_1.DBLocal.promise().query(`
+        const dbUser = yield dbconnection_1.DB.promise().query(`
             SELECT 
                 u.id,
                 u.name,
                 u.address,
                 SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE -t.amount END) as balance
             FROM 
-                week9.user as u
+                railway.user as u
             LEFT JOIN
-                week9.transaction as t
+                railway.transaction as t
                 ON u.id = t.user_id
             GROUP BY
                 u.id`);
-        if (Object.keys(dbLocalUser).length !== 0) {
-            res.status(200).json((0, errorHandling_1.errorHandling)(dbLocalUser[0], null));
+        if (Object.keys(dbUser).length !== 0) {
+            res.status(200).json((0, errorHandling_1.errorHandling)(dbUser[0], null));
         }
         else {
             res.status(404).json((0, errorHandling_1.errorHandling)(null, "User not found"));
@@ -80,5 +80,5 @@ const getAllUserDataLocal = (req, res) => __awaiter(void 0, void 0, void 0, func
         res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
     }
 });
-const UserDataController = { getUserDataLocal, getAllUserDataLocal };
+const UserDataController = { getUserData, getAllUserData };
 exports.default = UserDataController;

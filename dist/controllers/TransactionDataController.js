@@ -15,45 +15,41 @@ const dbconnection_1 = require("../config/dbconnection");
 const errorHandling_1 = require("./errorHandling");
 // railway
 // ALL TRANSACTION DATA
+// const getAllTransactionData = async (req: Request, res: Response) => {
+//     try {
+//         const [dbTrans] = await DB.promise().query("select * from railway.transaction");
+//         console.log(dbTrans)
+//         if (Object.keys(dbTrans).length !== 0) {
+//             res.status(200).json(errorHandling(dbTrans, null));
+//         } else {
+//             res.status(404).json(errorHandling(null, "Data not found"));
+//         }
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json(errorHandling(null, "Connection error!! Can't Retrieve Data"));
+//     }
+// };
+// // // TRANSACTION DATA BY ID
+// const getTransactionData = (req: Request, res: Response) => {
+//     DB.query(`select * from railway.transaction where user_id= ${req.params.id}`, function(err, result, fields){
+//         if(err){           
+//             console.error(err)
+//             res.status(500).json(errorHandling(null, "Connection error!! Can't retrieve Data"))
+//             res.end()
+//             return
+//         } else {
+//             res.status(200).json(errorHandling(result, null))
+//             res.end()
+//         }
+//     })
+// }
+// ==========================================================================================
+// ALL TRANSACTION DATA
 const getAllTransactionData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const [dbTrans] = yield dbconnection_1.DB.promise().query("select * from railway.transaction");
-        console.log(dbTrans);
+        const dbTrans = yield dbconnection_1.DB.promise().query(` SELECT * FROM railway.transaction`);
         if (Object.keys(dbTrans).length !== 0) {
-            res.status(200).json((0, errorHandling_1.errorHandling)(dbTrans, null));
-        }
-        else {
-            res.status(404).json((0, errorHandling_1.errorHandling)(null, "Data not found"));
-        }
-    }
-    catch (error) {
-        console.error(error);
-        res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't Retrieve Data"));
-    }
-});
-// // TRANSACTION DATA BY ID
-const getTransactionData = (req, res) => {
-    dbconnection_1.DB.query(`select * from railway.transaction where user_id= ${req.params.id}`, function (err, result, fields) {
-        if (err) {
-            console.error(err);
-            res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
-            res.end();
-            return;
-        }
-        else {
-            res.status(200).json((0, errorHandling_1.errorHandling)(result, null));
-            res.end();
-        }
-    });
-};
-// ================================LOCAL======================================
-// ALL TRANSACTION DATA (LOCAL)
-const getAllTransactionDataLocal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const dbLocalTrans = yield dbconnection_1.DBLocal.promise().query(`
-        SELECT * FROM week9.transaction`);
-        if (Object.keys(dbLocalTrans).length !== 0) {
-            res.status(200).json((0, errorHandling_1.errorHandling)(dbLocalTrans[0], null));
+            res.status(200).json((0, errorHandling_1.errorHandling)(dbTrans[0], null));
         }
         else {
             res.status(404).json((0, errorHandling_1.errorHandling)(null, "Data not found"));
@@ -64,9 +60,9 @@ const getAllTransactionDataLocal = (req, res) => __awaiter(void 0, void 0, void 
         res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
     }
 });
-// TRANSACTION DATA BY USER_ID (LOCAL)
-const getTransactionDataLocal = (req, res) => {
-    dbconnection_1.DBLocal.query(`SELECT * FROM week9.transaction WHERE user_id= ${req.params.id}`, function (err, result, fields) {
+// TRANSACTION DATA BY USER_ID
+const getTransactionData = (req, res) => {
+    dbconnection_1.DB.query(`SELECT * FROM railway.transaction WHERE user_id= ${req.params.id}`, function (err, result, fields) {
         if (err) {
             console.error(err);
             res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
@@ -79,26 +75,26 @@ const getTransactionDataLocal = (req, res) => {
         }
     });
 };
-// CREATE NEW ROW/ DATA ENTRY (LOCAL)
-const insertTransactionDataLocal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// CREATE NEW ROW/ DATA ENTRY
+const insertTransactionData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { type, amount, user_id } = req.body;
-        const dbLocalTrans = yield dbconnection_1.DBLocal.promise().query(`
+        const dbTrans = yield dbconnection_1.DB.promise().query(`
         INSERT INTO transaction SET \`type\`='${type}', amount=${amount}, user_id=${user_id}
         `);
-        res.status(200).json((0, errorHandling_1.errorHandling)({ id: dbLocalTrans[0].insertId }, null));
+        res.status(200).json((0, errorHandling_1.errorHandling)({ id: dbTrans[0].insertId }, null));
     }
     catch (error) {
         console.error(error);
         res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
     }
 });
-// UPDATE WHOLE TRANSACTION DATA BY ID (LOCAL)
-const updateTransactionDataLocal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// UPDATE WHOLE TRANSACTION DATA BY ID
+const updateTransactionData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = parseInt(req.params.id);
         const { type, amount, user_id } = req.body;
-        const dbLocalTrans = yield dbconnection_1.DBLocal.promise().query(`
+        const dbTrans = yield dbconnection_1.DB.promise().query(`
         UPDATE transaction SET \`type\`='${type}', amount=${amount}, user_id=${user_id}
         `, id);
         res.status(200).json((0, errorHandling_1.errorHandling)({ id: id }, null));
@@ -108,11 +104,11 @@ const updateTransactionDataLocal = (req, res) => __awaiter(void 0, void 0, void 
         res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
     }
 });
-// DELETE TRANSACTION DATA (LOCAL)
-const deleteTransactionDataLocal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// DELETE TRANSACTION DATA
+const deleteTransactionData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = parseInt(req.params.id);
-        const dbLocalTrans = yield dbconnection_1.DBLocal.promise().query(`
+        const dbTrans = yield dbconnection_1.DB.promise().query(`
         DELETE FROM transaction WHERE id = ?`, id);
         res.status(200).json((0, errorHandling_1.errorHandling)({ id: id }, null));
     }
@@ -123,11 +119,9 @@ const deleteTransactionDataLocal = (req, res) => __awaiter(void 0, void 0, void 
 });
 const TransactionDataController = {
     getAllTransactionData,
-    getAllTransactionDataLocal,
     getTransactionData,
-    getTransactionDataLocal,
-    insertTransactionDataLocal,
-    updateTransactionDataLocal,
-    deleteTransactionDataLocal
+    insertTransactionData,
+    updateTransactionData,
+    deleteTransactionData
 };
 exports.default = TransactionDataController;

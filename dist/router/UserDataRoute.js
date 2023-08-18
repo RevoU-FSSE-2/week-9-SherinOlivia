@@ -7,7 +7,7 @@ const express_1 = __importDefault(require("express"));
 const userrouter = express_1.default.Router();
 const UserDataController_1 = __importDefault(require("../controllers/UserDataController"));
 // get all user data
-userrouter.get('/', UserDataController_1.default.getAllUserDataLocal);
+userrouter.get('/', UserDataController_1.default.getAllUserData);
 // get user data per id
-userrouter.get('/:id', UserDataController_1.default.getUserDataLocal);
+userrouter.get('/:id', UserDataController_1.default.getUserData);
 exports.default = userrouter;

@@ -1,10 +1,9 @@
 import express, { Request, Response } from 'express';
-import { DB, DBLocal } from '../config/dbconnection';
+import { DB } from '../config/dbconnection';
 // import redisCon from "../config/redisconnection";
 import { errorHandling, query } from './errorHandling';
-import { RowDataPacket } from 'mysql2';
 
-const getUserDataLocal = async (req: Request, res: Response) => {
+const getUserData = async (req: Request, res: Response) => {
     try {
         const id = parseInt(req.params.id)
         // const userKey = "user:" + id
@@ -15,7 +14,7 @@ const getUserDataLocal = async (req: Request, res: Response) => {
         //     res.status(200).json(errorHandling(redisCacheData, null))
         //     res.end()
         // } else {
-            const dbLocalUser: any[] = await DBLocal.promise().query(`
+            const dbUser: any[] = await DB.promise().query(`
             SELECT 
                 u.id,
                 u.name,
@@ -23,19 +22,19 @@ const getUserDataLocal = async (req: Request, res: Response) => {
                 SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE -t.amount END) as balance,
                 SUM(CASE WHEN t.type = 'expense' THEN t.amount ELSE 0 END) as expense
             FROM 
-                week9.user as u
+                railway.user as u
             LEFT JOIN
-                week9.transaction as t
+                railway.transaction as t
                 ON u.id = t.user_id
             WHERE
                 u.id = ?
             GROUP BY
                 u.id`, id)
 
-            // await redisCon.hset(userKey, dbLocalUser)
+            // await redisCon.hset(userKey, dbUser)
             // await redisCon.expire(userKey, 50);
-            if (Object.keys(dbLocalUser).length !== 0)  {
-                res.status(200).json(errorHandling(dbLocalUser[0][0], null));
+            if (Object.keys(dbUser).length !== 0)  {
+                res.status(200).json(errorHandling(dbUser[0][0], null));
             } else {
                 res.status(404).json(errorHandling(null, "User not found"));
             }
@@ -47,24 +46,24 @@ const getUserDataLocal = async (req: Request, res: Response) => {
 
 // Get All User Data
 
-const getAllUserDataLocal = async (req: Request, res: Response) => {
+const getAllUserData = async (req: Request, res: Response) => {
     try {
-            const dbLocalUser = await DBLocal.promise().query(`
+            const dbUser = await DB.promise().query(`
             SELECT 
                 u.id,
                 u.name,
                 u.address,
                 SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE -t.amount END) as balance
             FROM 
-                week9.user as u
+                railway.user as u
             LEFT JOIN
-                week9.transaction as t
+                railway.transaction as t
                 ON u.id = t.user_id
             GROUP BY
                 u.id`)
 
-            if (Object.keys(dbLocalUser).length !== 0)  {
-                res.status(200).json(errorHandling(dbLocalUser[0], null));
+            if (Object.keys(dbUser).length !== 0)  {
+                res.status(200).json(errorHandling(dbUser[0], null));
             } else {
                 res.status(404).json(errorHandling(null, "User not found"));
             }
@@ -74,5 +73,5 @@ const getAllUserDataLocal = async (req: Request, res: Response) => {
         }
     };
 
-const UserDataController = { getUserDataLocal, getAllUserDataLocal }
+const UserDataController = { getUserData, getAllUserData }
 export default UserDataController
