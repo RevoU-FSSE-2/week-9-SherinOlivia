@@ -32,12 +32,16 @@ As part of the assignment, we will create a simple REST API Server using Express
 
 ## API Contract
 - **GET** /user/:id
+  
 ![get-method](https://raw.githubusercontent.com/RevoU-FSSE-2/week-9-SherinOlivia/main/documentation/get-userid-method.webp)
 - **POST** /transaction
+  
 ![post-method](https://raw.githubusercontent.com/RevoU-FSSE-2/week-9-SherinOlivia/main/documentation/post-method.webp)
 - **PUT** /transaction/:id
+  
 ![put-method](https://raw.githubusercontent.com/RevoU-FSSE-2/week-9-SherinOlivia/main/documentation/put-method.webp)
 - **DELETE** /transaction/:id
+  
 ![delete-method](https://raw.githubusercontent.com/RevoU-FSSE-2/week-9-SherinOlivia/main/documentation/delete-method.webp)
 
 
