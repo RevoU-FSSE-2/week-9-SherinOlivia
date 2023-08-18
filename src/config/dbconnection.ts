@@ -3,12 +3,7 @@ import { DBConfig, DBConfigLocal } from './dbconfig';
 import 'dotenv/config';
 
 
-export const DB = mysql.createConnection({
-    host: DBConfig.HOST,
-    user: DBConfig.USER,
-    password: DBConfig.PASSWORD,
-    database: DBConfig.DATABASE,
-})
+export const DB = mysql.createConnection(`process.env.SQL_URL`)
 
 
 // local
@@ -18,4 +13,3 @@ export const DBLocal = mysql.createConnection({
     password: DBConfigLocal.PASSWORD,
     database: DBConfigLocal.DATABASE,
 })
-

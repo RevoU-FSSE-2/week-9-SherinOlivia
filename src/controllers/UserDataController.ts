@@ -4,7 +4,7 @@ import { DB, DBLocal } from '../config/dbconnection';
 import { errorHandling, query } from './errorHandling';
 import { RowDataPacket } from 'mysql2';
 
-const getUserDataLocal = async (req: Request, res: Response) => {
+const getUserData = async (req: Request, res: Response) => {
     try {
         const id = parseInt(req.params.id)
         // const userKey = "user:" + id
@@ -15,7 +15,7 @@ const getUserDataLocal = async (req: Request, res: Response) => {
         //     res.status(200).json(errorHandling(redisCacheData, null))
         //     res.end()
         // } else {
-            const dbLocalUser: any[] = await DBLocal.promise().query(`
+            const dbUser: any[] = await DB.promise().query(`
             SELECT 
                 u.id,
                 u.name,
@@ -34,8 +34,8 @@ const getUserDataLocal = async (req: Request, res: Response) => {
 
             // await redisCon.hset(userKey, dbLocalUser)
             // await redisCon.expire(userKey, 50);
-            if (Object.keys(dbLocalUser).length !== 0)  {
-                res.status(200).json(errorHandling(dbLocalUser[0][0], null));
+            if (Object.keys(dbUser).length !== 0)  {
+                res.status(200).json(errorHandling(dbUser[0][0], null));
             } else {
                 res.status(404).json(errorHandling(null, "User not found"));
             }
@@ -47,9 +47,9 @@ const getUserDataLocal = async (req: Request, res: Response) => {
 
 // Get All User Data
 
-const getAllUserDataLocal = async (req: Request, res: Response) => {
+const getAllUserData = async (req: Request, res: Response) => {
     try {
-            const dbLocalUser = await DBLocal.promise().query(`
+            const dbUser = await DB.promise().query(`
             SELECT 
                 u.id,
                 u.name,
@@ -63,8 +63,8 @@ const getAllUserDataLocal = async (req: Request, res: Response) => {
             GROUP BY
                 u.id`)
 
-            if (Object.keys(dbLocalUser).length !== 0)  {
-                res.status(200).json(errorHandling(dbLocalUser[0], null));
+            if (Object.keys(dbUser).length !== 0)  {
+                res.status(200).json(errorHandling(dbUser[0], null));
             } else {
                 res.status(404).json(errorHandling(null, "User not found"));
             }
@@ -74,5 +74,5 @@ const getAllUserDataLocal = async (req: Request, res: Response) => {
         }
     };
 
-const UserDataController = { getUserDataLocal, getAllUserDataLocal }
+const UserDataController = { getUserData, getAllUserData }
 export default UserDataController
