@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { DB, DBLocal } from '../config/dbconnection';
+import { RowDataPacket } from 'mysql2';
 // import { redisCon } from '../config/redisconnection';
 import { errorHandling, query } from './errorHandling';
 
@@ -8,10 +9,10 @@ import { errorHandling, query } from './errorHandling';
 // ALL TRANSACTION DATA
 const getAllTransactionData = async (req: Request, res: Response) => {
     try {
-        const [dbTrans]= await DB.promise().query(`
-        select * from week9.transaction`)
+        const dbTrans = (await DB.promise().query(`
+            SELECT * FROM week9.transaction`))[0] as RowDataPacket[];
 
-        if ([dbTrans].length !== 0)  {
+        if (dbTrans.length !== 0) {
             res.status(200).json(errorHandling(dbTrans, null));
         } else {
             res.status(404).json(errorHandling(null, "Data not found"));
@@ -21,6 +22,7 @@ const getAllTransactionData = async (req: Request, res: Response) => {
         res.status(500).json(errorHandling(null, "Connection error!! Can't Retrieve Data"));
     }
 };
+
 
 // // TRANSACTION DATA BY ID
 const getTransactionData = (req: Request, res: Response) => {
