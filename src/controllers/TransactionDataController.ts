@@ -9,10 +9,9 @@ import { errorHandling, query } from './errorHandling';
 // ALL TRANSACTION DATA
 const getAllTransactionData = async (req: Request, res: Response) => {
     try {
-        const dbTrans = (await DB.promise().query(`
-            SELECT * FROM week9.transaction`))[0] as RowDataPacket[];
+        const dbTrans = await DB.promise().query("select * from railway.transaction");
 
-        if (dbTrans.length !== 0) {
+        if (Object.keys(dbTrans).length !== 0) {
             res.status(200).json(errorHandling(dbTrans, null));
         } else {
             res.status(404).json(errorHandling(null, "Data not found"));

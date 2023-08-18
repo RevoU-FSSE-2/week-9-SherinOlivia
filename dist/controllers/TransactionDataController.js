@@ -15,10 +15,9 @@ const errorHandling_1 = require("./errorHandling");
 // ALL TRANSACTION DATA
 const getAllTransactionData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const dbTrans = yield dbconnection_1.DB.promise().query(`
-        select * from week9.transaction`);
+        const dbTrans = yield dbconnection_1.DB.promise().query("select * from railway.transaction");
         if (Object.keys(dbTrans).length !== 0) {
-            res.status(200).json((0, errorHandling_1.errorHandling)(dbTrans[0], null));
+            res.status(200).json((0, errorHandling_1.errorHandling)(dbTrans, null));
         }
         else {
             res.status(404).json((0, errorHandling_1.errorHandling)(null, "Data not found"));
