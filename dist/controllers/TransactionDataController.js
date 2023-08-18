@@ -1,16 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
 const dbconnection_1 = require("../config/dbconnection");
-const router = express_1.default.Router();
-// import redis from 'ioredis';
-// const redisCon = new redis(
-// host: 'localhost'
-// port: 6379
-// )
+// import { redisCon } from '../config/redisconnection';
+const errorHandling_1 = require("./errorHandling");
 // ALL TRANSACTION DATA
 const getAllTransactionData = (req, res) => {
     dbconnection_1.DB.connect(function (err) {
@@ -50,37 +42,31 @@ const getTransactionData = (req, res) => {
 // ================================LOCAL======================================
 // ALL TRANSACTION DATA (LOCAL)
 const getAllTransactionDataLocal = (req, res) => {
-    dbconnection_1.DBLocal.connect(function (err) {
+    dbconnection_1.DBLocal.query("SELECT * FROM week9.transaction", function (err, result, fields) {
         if (err) {
-            res.status(400).send(err);
+            console.error(err);
+            res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
+            res.end();
+            return;
         }
         else {
-            dbconnection_1.DBLocal.query("SELECT * FROM transaction", function (err, result, fields) {
-                if (err) {
-                    res.status(400).send(err);
-                }
-                else {
-                    return res.status(200).send(result);
-                }
-            });
+            res.status(200).json((0, errorHandling_1.errorHandling)(result, null));
+            res.end();
         }
     });
 };
 // TRANSACTION DATA BY USER_ID (LOCAL)
 const getTransactionDataLocal = (req, res) => {
-    dbconnection_1.DBLocal.connect(function (err) {
+    dbconnection_1.DBLocal.query(`SELECT * FROM week9.transaction WHERE user_id= ${req.params.id}`, function (err, result, fields) {
         if (err) {
-            res.status(400).send(err);
+            console.error(err);
+            res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
+            res.end();
+            return;
         }
         else {
-            dbconnection_1.DBLocal.query(`SELECT * FROM transaction WHERE user_id= ${req.params.id}`, function (err, result, fields) {
-                if (err) {
-                    res.status(400).send(err);
-                }
-                else {
-                    return res.status(200).send(result);
-                }
-            });
+            res.status(200).json((0, errorHandling_1.errorHandling)(result, null));
+            res.end();
         }
     });
 };

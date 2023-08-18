@@ -1,11 +1,10 @@
 import express, { Request, Response } from 'express';
 import { DB, DBLocal } from '../config/dbconnection';
-const router = express.Router();
-// import redis from 'ioredis';
-// const redisCon = new redis(
-// host: 'localhost'
-// port: 6379
-// )
+// import { redisCon } from '../config/redisconnection';
+import { errorHandling, query } from './errorHandling';
+
+
+
 // ALL TRANSACTION DATA
 const getAllTransactionData = (req: Request, res: Response) => {
     DB.connect(function(err){
@@ -44,28 +43,44 @@ const getTransactionData = (req: Request, res: Response) => {
 
 // ALL TRANSACTION DATA (LOCAL)
 const getAllTransactionDataLocal = (req: Request, res: Response) => {
-    DBLocal.connect(function(err){
-        if(err){
-            res.status(400).send(err)
-        }else {
-            DBLocal.query("SELECT * FROM transaction", function(err, result, fields){
-                if(err){           
-                    res.status(400).send(err)
-                }else {
-                    return res.status(200).send(result);
-                }
-            })
+    DBLocal.query("SELECT * FROM week9.transaction", function(err, result, fields) {
+        if(err){           
+            console.error(err)
+            res.status(500).json(errorHandling(null, "Connection error!! Can't retrieve Data"))
+            res.end()
+            return
+        } else {
+            res.status(200).json(errorHandling(result, null))
+            res.end()
         }
     })
 }
 
 // TRANSACTION DATA BY USER_ID (LOCAL)
-const getTransactionDataLocal = (req: Request, res: Response) => {
+const getTransactionDataLocal = (req: Request, res: Response) => { 
+    DBLocal.query(`SELECT * FROM week9.transaction WHERE user_id= ${req.params.id}`, function(err, result, fields){
+        if(err){           
+            console.error(err)
+            res.status(500).json(errorHandling(null, "Connection error!! Can't retrieve Data"))
+            res.end()
+            return
+        } else {
+            res.status(200).json(errorHandling(result, null))
+            res.end()
+        }
+    })
+}
+    
+
+// CREATE NEW ROW/ DATA ENTRY (LOCAL)
+
+const insertTransactionDataLocal = (req: Request, res: Response) => {
     DBLocal.connect(function(err){
         if(err){
             res.status(400).send(err)
         }else {
-            DBLocal.query(`SELECT * FROM transaction WHERE user_id= ${req.params.id}`, function(err, result, fields){
+            const {type, amount, user_id} = req.body;
+            DBLocal.query(`INSERT INTO transaction SET user_id=${user_id}, \`type\`='${type}', amount=${amount}`, function(err, result, fields){
                 if(err){           
                     res.status(400).send(err)
                 }else {
@@ -74,27 +89,6 @@ const getTransactionDataLocal = (req: Request, res: Response) => {
             })
         }
     })
-}
-
-
-// CREATE NEW ROW/ DATA ENTRY (LOCAL)
-
-    const insertTransactionDataLocal = (req: Request, res: Response) => {
-        DBLocal.connect(function(err){
-            if(err){
-                res.status(400).send(err)
-            }else {
-                const {type, amount, user_id} = req.body;
-                DBLocal.query(`INSERT INTO transaction SET user_id=${user_id}, \`type\`='${type}', amount=${amount}`, function(err, result, fields){
-                    if(err){           
-                        res.status(400).send(err)
-                    }else {
-                        return res.status(200).send(result);
-                    }
-                })
-            }
-        })
-    
 }
 
 //     const insertTransactionDataLocal = async (req: Request, res: Response) => {
