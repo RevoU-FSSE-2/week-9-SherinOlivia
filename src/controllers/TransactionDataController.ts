@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { DB, DBLocal } from '../config/dbconnection';
-import { RowDataPacket } from 'mysql2';
+// import { RowDataPacket } from 'mysql2';
 // import { redisCon } from '../config/redisconnection';
 import { errorHandling, query } from './errorHandling';
 
