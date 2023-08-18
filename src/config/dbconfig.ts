@@ -3,7 +3,6 @@ export const DBConfig = {
     USER: process.env.SQL_USERNAME,
     PASSWORD: process.env.SQL_PASSWORD,
     DATABASE: process.env.SQL_DATABASE,
-    PORT: process.env.SQL_PORT
 }
 
 

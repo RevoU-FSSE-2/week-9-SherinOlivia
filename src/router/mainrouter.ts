@@ -12,7 +12,7 @@ router.get("/", function (req: Request, res: Response) {
     })
 })
 
-// router.use('/transactions', transactionrouter)
-// router.use('/users', userrouter)
+router.use('/transactions', transactionrouter)
+router.use('/users', userrouter)
 
 export default router;
