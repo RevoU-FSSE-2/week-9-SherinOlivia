@@ -27,7 +27,8 @@ const getUserDataLocal = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 u.id,
                 u.name,
                 u.address,
-                SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE -t.amount END) as balance
+                SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE -t.amount END) as balance,
+                SUM(CASE WHEN t.type = 'expense' THEN t.amount ELSE 0 END) as expense
             FROM 
                 week9.user as u
             LEFT JOIN

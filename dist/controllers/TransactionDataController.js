@@ -1,41 +1,44 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const dbconnection_1 = require("../config/dbconnection");
 // import { redisCon } from '../config/redisconnection';
 const errorHandling_1 = require("./errorHandling");
 // ALL TRANSACTION DATA
 const getAllTransactionData = (req, res) => {
-    dbconnection_1.DB.connect(function (err) {
+    dbconnection_1.DB.query("SELECT * FROM week9.transaction", function (err, result, fields) {
         if (err) {
-            res.status(400).send(err);
+            console.error(err);
+            res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
+            res.end();
+            return;
         }
         else {
-            dbconnection_1.DB.query("SELECT * FROM transaction", function (err, result, fields) {
-                if (err) {
-                    res.status(400).send(err);
-                }
-                else {
-                    return res.status(200).send(result);
-                }
-            });
+            res.status(200).json((0, errorHandling_1.errorHandling)(result, null));
+            res.end();
         }
     });
 };
 // TRANSACTION DATA BY ID
 const getTransactionData = (req, res) => {
-    dbconnection_1.DB.connect(function (err) {
+    dbconnection_1.DB.query(`SELECT * FROM week9.transaction WHERE user_id= ${req.params.id}`, function (err, result, fields) {
         if (err) {
-            res.status(400).send(err);
+            console.error(err);
+            res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
+            res.end();
+            return;
         }
         else {
-            dbconnection_1.DB.query("SELECT id FROM transaction", function (err, result, fields) {
-                if (err) {
-                    res.status(400).send(err);
-                }
-                else {
-                    return res.status(200).send(result);
-                }
-            });
+            res.status(200).json((0, errorHandling_1.errorHandling)(result, null));
+            res.end();
         }
     });
 };
@@ -71,24 +74,34 @@ const getTransactionDataLocal = (req, res) => {
     });
 };
 // CREATE NEW ROW/ DATA ENTRY (LOCAL)
-const insertTransactionDataLocal = (req, res) => {
-    dbconnection_1.DBLocal.connect(function (err) {
-        if (err) {
-            res.status(400).send(err);
+const insertTransactionDataLocal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const body = req.body;
+        const dbLocalUser = yield dbconnection_1.DBLocal.promise().query(`
+            SELECT 
+                u.id,
+                u.name,
+                u.address,
+                SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE -t.amount END) as balance
+            FROM 
+                week9.user as u
+            LEFT JOIN
+                week9.transaction as t
+                ON u.id = t.user_id
+            GROUP BY
+                u.id`);
+        if (Object.keys(dbLocalUser).length !== 0) {
+            res.status(200).json((0, errorHandling_1.errorHandling)(dbLocalUser, null));
         }
         else {
-            const { type, amount, user_id } = req.body;
-            dbconnection_1.DBLocal.query(`INSERT INTO transaction SET user_id=${user_id}, \`type\`='${type}', amount=${amount}`, function (err, result, fields) {
-                if (err) {
-                    res.status(400).send(err);
-                }
-                else {
-                    return res.status(200).send(result);
-                }
-            });
+            res.status(404).json((0, errorHandling_1.errorHandling)(null, "User not found"));
         }
-    });
-};
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
+    }
+});
 //     const insertTransactionDataLocal = async (req: Request, res: Response) => {
 //         // try {
 //         //     DBLocal.connect(function(err){

@@ -20,7 +20,8 @@ const getUserDataLocal = async (req: Request, res: Response) => {
                 u.id,
                 u.name,
                 u.address,
-                SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE -t.amount END) as balance
+                SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE -t.amount END) as balance,
+                SUM(CASE WHEN t.type = 'expense' THEN t.amount ELSE 0 END) as expense
             FROM 
                 week9.user as u
             LEFT JOIN
@@ -48,7 +49,6 @@ const getUserDataLocal = async (req: Request, res: Response) => {
 
 const getAllUserDataLocal = async (req: Request, res: Response) => {
     try {
-
             const dbLocalUser = await DBLocal.promise().query(`
             SELECT 
                 u.id,
