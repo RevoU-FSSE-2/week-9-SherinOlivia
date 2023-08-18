@@ -30,6 +30,9 @@ As part of the assignment, we will create a simple REST API Server using Express
 | **Delete Transaction Data by ID** | `DELETE` | [/transaction/:id](https://week9sherin-apidb-prod.up.railway.app/transaction/1) |
 </div>
 
+## Syntax used to Create Database Table
+![syntax-](https://raw.githubusercontent.com/RevoU-FSSE-2/week-9-SherinOlivia/main/documentation/syntax-createtable.webp)
+
 ## API Contract
 - **GET** /user/:id
   
