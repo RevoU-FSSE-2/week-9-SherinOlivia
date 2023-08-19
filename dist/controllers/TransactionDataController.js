@@ -60,9 +60,9 @@ const getAllTransactionData = (req, res) => __awaiter(void 0, void 0, void 0, fu
         res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
     }
 });
-// TRANSACTION DATA BY USER_ID
+// TRANSACTION DATA BY TRANSACTION ID
 const getTransactionData = (req, res) => {
-    dbconnection_1.DB.query(`SELECT * FROM railway.transaction WHERE user_id= ${req.params.id}`, function (err, result, fields) {
+    dbconnection_1.DB.query(`SELECT * FROM railway.transaction WHERE id= ${req.params.id}`, function (err, result, fields) {
         if (err) {
             console.error(err);
             res.status(500).json((0, errorHandling_1.errorHandling)(null, "Connection error!! Can't retrieve Data"));
@@ -75,25 +75,6 @@ const getTransactionData = (req, res) => {
         }
     });
 };
-<<<<<<< HEAD
-// ALL TRANSACTION DATA (LOCAL)
-const getAllTransactionDataLocal = (req, res) => {
-    dbconnection_1.DBLocal.connect(function (err) {
-        if (err) {
-            res.status(400).send(err);
-        }
-        else {
-            dbconnection_1.DBLocal.query("SELECT * FROM transaction", function (err, result, fields) {
-                if (err) {
-                    res.status(400).send(err);
-                }
-                else {
-                    return res.status(200).send(result);
-                }
-            });
-        }
-    });
-=======
 // CREATE NEW ROW/ DATA ENTRY
 const insertTransactionData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -142,6 +123,5 @@ const TransactionDataController = {
     insertTransactionData,
     updateTransactionData,
     deleteTransactionData
->>>>>>> 75fb64bcaf326bc4a96c63a03d718f10a6a512c8
 };
 exports.default = TransactionDataController;

@@ -57,9 +57,9 @@ const getAllTransactionData = async (req: Request, res: Response) => {
     }
 };
 
-// TRANSACTION DATA BY USER_ID
+// TRANSACTION DATA BY TRANSACTION ID
 const getTransactionData = (req: Request, res: Response) => { 
-    DB.query(`SELECT * FROM railway.transaction WHERE user_id= ${req.params.id}`, function(err, result, fields){
+    DB.query(`SELECT * FROM railway.transaction WHERE id= ${req.params.id}`, function(err, result, fields){
         if(err){           
             console.error(err)
             res.status(500).json(errorHandling(null, "Connection error!! Can't retrieve Data"))
@@ -89,26 +89,7 @@ const insertTransactionData = async (req: Request, res: Response) => {
 };
 
 
-<<<<<<< HEAD
-// ALL TRANSACTION DATA (LOCAL)
-const getAllTransactionDataLocal = (req: Request, res: Response) => {
-    DBLocal.connect(function(err){
-        if(err){
-            res.status(400).send(err)
-        }else {
-            DBLocal.query("SELECT * FROM transaction", function(err, result, fields){
-                if(err){           
-                    res.status(400).send(err)
-                }else {
-                    return res.status(200).send(result);
-                }
-            })
-        }
-    })
-}
-=======
 // UPDATE WHOLE TRANSACTION DATA BY ID
->>>>>>> 75fb64bcaf326bc4a96c63a03d718f10a6a512c8
 
 const updateTransactionData = async (req: Request, res: Response) => {
     try {

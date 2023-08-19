@@ -5,12 +5,7 @@ import router from './router/mainrouter';
 import bodyParser from "body-parser";
 
 const app: Express = express();
-<<<<<<< HEAD
-const port = process.env.PORT
-console.log(port)
-=======
 const port = process.env.PORT || 5853;
->>>>>>> 75fb64bcaf326bc4a96c63a03d718f10a6a512c8
 
 DB.connect( function () {
     if (DB) {
