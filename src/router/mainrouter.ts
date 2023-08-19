@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
-import transactionrouter from './TransactionDataRoute'
+import transactionrouter from './TransactionDataRoute';
+import userrouter from './UserDataRoute';
+
 const router = express.Router();
 
 // main app/page route
@@ -10,9 +12,7 @@ router.get("/", function (req: Request, res: Response) {
     })
 })
 
-
 router.use('/transaction', transactionrouter)
-
-
+router.use('/user', userrouter)
 
 export default router;

@@ -5,10 +5,14 @@ import router from './router/mainrouter';
 import bodyParser from "body-parser";
 
 const app: Express = express();
+<<<<<<< HEAD
 const port = process.env.PORT
 console.log(port)
+=======
+const port = process.env.PORT || 5853;
+>>>>>>> 75fb64bcaf326bc4a96c63a03d718f10a6a512c8
 
-DB.connect(function () {
+DB.connect( function () {
     if (DB) {
         console.log("Railway Connection Connected");
     } else {
@@ -16,7 +20,7 @@ DB.connect(function () {
     }
 }),
 
-DBLocal.connect(function () {
+DBLocal.connect( function () {
     if (DBLocal) {
         console.log("Localhost Connection Connected");
     } else {
