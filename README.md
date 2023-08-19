@@ -32,19 +32,23 @@ As part of the assignment, we will create a simple REST API Server using Express
 
 ## Syntax used to Create Database Table
 - user table:
-`create table user (`
-`    id int not null auto_increment,`
-`    name varchar(100) not null,`
-`    address varchar(255) not null,`
-`    primary key(id) )`
+  
+`create table user (
+    id int not null auto_increment,
+    name varchar(100) not null,
+    address varchar(255) not null,
+    primary key(id)
+  )`
 
 - transaction table:
-`create table transaction (`
-    `id int not null auto_increment,`
-    `user_id int not null,`
-    `type enum('income','expense') not null,`
-    `amount double(10,2) not null,`
-    `primary key(id) )`
+  
+`create table transaction (
+    id int not null auto_increment,
+    user_id int not null,
+    type enum('income','expense') not null,
+    amount double(10,2) not null,
+    primary key(id)
+  )`
     
 ![syntax-](https://raw.githubusercontent.com/RevoU-FSSE-2/week-9-SherinOlivia/main/documentation/syntax-createtable.webp)
 
